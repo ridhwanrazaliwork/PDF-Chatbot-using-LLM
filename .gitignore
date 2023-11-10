@@ -1,0 +1,5 @@
+# virtual environment
+chatvenv/
+
+# Passwords and API Keys
+.streamlit/secrets.toml
