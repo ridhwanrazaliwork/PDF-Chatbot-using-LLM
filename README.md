@@ -1,3 +1,5 @@
+# Forked from https://github.com/safwanshamsir99/PDF-Chatbot-using-LLM
+
 # PDF-Chatbot-using-LLM
 Simple PDF Chatbot by using Langchain, OpenAI API, FAISS, and Streamlit. This chatbot is very useful to do skimming in literature.
 
