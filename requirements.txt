@@ -84,3 +84,5 @@ yarl==1.9.2
 zipp==3.17.0
 InstructorEmbedding==1.0.1
 sentence-transformers==2.2.2
+langchain-groq
+ollama
