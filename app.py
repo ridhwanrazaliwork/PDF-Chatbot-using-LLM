@@ -2,11 +2,14 @@ import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.llms import HuggingFaceHub
+
+groq_api_key = st.secrets.api_keys.OPENAI_API_KEY
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -27,14 +30,21 @@ def get_text_chunks(text):
     return chunks
 
 def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY)
+    embeddings = OllamaEmbeddings()
+    # Uncomment below if u are using Openai embeddings
+    # embeddings = OpenAIEmbeddings(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY)
     # Uncomment below this if you are using embeddings from HuggingFace
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl") 
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY, temperature=0.25)
+    llm = ChatGroq(
+            groq_api_key=groq_api_key, 
+            model_name='llama-3.2-1b-preview'
+    )
+    # Uncomment below if u are using Openai embeddings
+    # llm = ChatOpenAI(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY, temperature=0.25)
     # Uncomment below this if you are using HuggingFace embedding models
     # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512}) 
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
