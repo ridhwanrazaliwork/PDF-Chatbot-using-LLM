@@ -27,16 +27,16 @@ def get_text_chunks(text):
     return chunks
 
 def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY)
+    # embeddings = OpenAIEmbeddings(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY)
     # Uncomment below this if you are using embeddings from HuggingFace
-    # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl") 
+    embeddings = HuggingFaceInstructEmbeddings(huggingfacehub_api_token=st.secrets.api_keys.HUG_API_KEY, model_name="hkunlp/instructor-xl") 
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY, temperature=0.25)
+    # llm = ChatOpenAI(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY, temperature=0.25)
     # Uncomment below this if you are using HuggingFace embedding models
-    # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512}) 
+    llm = HuggingFaceHub(huggingfacehub_api_token=st.secrets.api_keys.HUG_API_KEY, repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512}) 
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
