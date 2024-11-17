@@ -29,7 +29,7 @@ def get_text_chunks(text):
 def get_vectorstore(text_chunks):
     # embeddings = OpenAIEmbeddings(openai_api_key=st.secrets.api_keys.OPENAI_API_KEY)
     # Uncomment below this if you are using embeddings from HuggingFace
-    embeddings = HuggingFaceInstructEmbeddings(huggingfacehub_api_token=st.secrets.api_keys.HUG_API_KEY, model_name="hkunlp/instructor-xl") 
+    embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl") 
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
