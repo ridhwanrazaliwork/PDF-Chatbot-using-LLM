@@ -27,6 +27,7 @@ httpx
 huggingface-hub
 idna
 importlib-metadata
+langchain-community
 Jinja2
 jsonpatch
 jsonpointer
